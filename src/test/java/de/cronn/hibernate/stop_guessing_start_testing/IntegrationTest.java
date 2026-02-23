@@ -13,7 +13,8 @@ class IntegrationTest extends AbstractSpringBootTest {
 
   @Test
   void testGetPosts() {
-    assertWithJsonFile(getPosts());
+    var posts = captureQueryAndCompareWithFile(this::getPosts);
+    assertWithJsonFile(posts);
   }
 
   public List<Object> getPosts() {
