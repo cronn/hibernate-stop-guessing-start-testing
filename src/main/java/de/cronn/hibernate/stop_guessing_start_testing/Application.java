@@ -24,6 +24,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -161,6 +162,7 @@ class PostController {
   }
 
   @GetExchange
+  @Transactional(readOnly = true)
   public List<PostEntryDto> getPosts() {
     return postRepository.findAll().stream().map(this::mapToDto).toList();
   }
