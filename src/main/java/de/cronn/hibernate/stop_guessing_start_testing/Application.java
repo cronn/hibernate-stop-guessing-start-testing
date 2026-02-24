@@ -160,12 +160,13 @@ class PostController {
   }
 
   @GetExchange
-  public List<MinimalPostEntryDto> getPosts() {
+  public List<PostEntryDto> getPosts() {
     return postRepository.findAll().stream().map(this::mapToDto).toList();
   }
 
-  private MinimalPostEntryDto mapToDto(Post post) {
-    return new MinimalPostEntryDto(post.getId(), post.getName(), post.getCreatedAt());
+  private PostEntryDto mapToDto(Post post) {
+    return new PostEntryDto(
+        post.getId(), post.getName(), post.getCreatedAt(), post.getPostComments().size());
   }
 
   @PutExchange("/{postId}")
