@@ -172,12 +172,12 @@ class PostController {
         post.getId(), post.getName(), post.getCreatedAt(), post.getPostComments().size());
   }
 
+  @Transactional
   @PutExchange("/{postId}")
   public void updatePost(@PathVariable long postId, @RequestBody MinimalPostEntryDto postEntryDto) {
     Post post = postRepository.findById(postId).orElseThrow();
     post.setCreatedAt(postEntryDto.createdAt());
     post.setName(postEntryDto.name());
-    postRepository.save(post);
   }
 }
 
