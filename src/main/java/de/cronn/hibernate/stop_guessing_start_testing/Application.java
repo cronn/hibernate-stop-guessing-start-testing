@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +24,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -187,7 +187,6 @@ class PostController {
 interface PostRepository extends JpaRepository<Post, Long> {
 
   @Override
-  @EntityGraph(attributePaths = "postComments")
   @Query("SELECT post FROM Post post ORDER BY post.id")
   Page<Post> findAll(Pageable pageable);
 }
@@ -202,6 +201,7 @@ class Post {
 
   @Version private Long version;
 
+  @BatchSize(size = 100)
   @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "post", fetch = FetchType.LAZY)
   private List<PostComment> postComments = new ArrayList<>();
 
