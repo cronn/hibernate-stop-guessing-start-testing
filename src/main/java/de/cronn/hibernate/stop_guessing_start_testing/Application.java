@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -195,6 +196,7 @@ class Post {
 
   @Version private Long version;
 
+  @BatchSize(size = 100)
   @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "post", fetch = FetchType.LAZY)
   private List<PostComment> postComments = new ArrayList<>();
 
