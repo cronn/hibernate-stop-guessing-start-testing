@@ -29,7 +29,10 @@ class IntegrationTest extends AbstractSpringBootTest {
 
   @Test
   void testUpdatePost() {
-    updatePost(new MinimalPostEntryDto(1, "New Name", Instant.parse("2025-02-02T12:00:00Z")));
+    captureQueryAndCompareWithFile(
+        () ->
+            updatePost(
+                new MinimalPostEntryDto(1, "New Name", Instant.parse("2025-02-02T12:00:00Z"))));
   }
 
   public void updatePost(MinimalPostEntryDto postEntryDto) {
