@@ -21,6 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -181,7 +182,8 @@ class PostController {
 interface PostRepository extends JpaRepository<Post, Long> {
 
   @Override
-  @Query("SELECT post FROM Post post LEFT JOIN FETCH post.postComments ORDER BY post.id")
+  @EntityGraph(attributePaths = "postComments")
+  @Query("SELECT post FROM Post post ORDER BY post.id")
   List<Post> findAll();
 }
 
