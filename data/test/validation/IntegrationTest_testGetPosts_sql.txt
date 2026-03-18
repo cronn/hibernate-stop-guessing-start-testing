@@ -18,3 +18,13 @@ Query:["
     order by
         p1_0.id"]
 Params:[()]
+
+
+Name:dataSource, Isolation:NONE, Success:True
+Type:Prepared, Batch:False, QuerySize:1, BatchSize:0
+Query:["
+    select
+        count(*) 
+    from
+        post p1_0"]
+Params:[()]

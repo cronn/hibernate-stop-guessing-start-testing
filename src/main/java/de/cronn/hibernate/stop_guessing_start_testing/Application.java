@@ -21,6 +21,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -164,7 +166,8 @@ class PostController {
   @GetExchange
   @Transactional(readOnly = true)
   public List<PostEntryDto> getPosts() {
-    return postRepository.findAll().stream().map(this::mapToDto).toList();
+    Page<Post> posts = postRepository.findAll(Pageable.ofSize(10).withPage(1));
+    return posts.stream().map(this::mapToDto).toList();
   }
 
   private PostEntryDto mapToDto(Post post) {
@@ -186,7 +189,7 @@ interface PostRepository extends JpaRepository<Post, Long> {
   @Override
   @EntityGraph(attributePaths = "postComments")
   @Query("SELECT post FROM Post post ORDER BY post.id")
-  List<Post> findAll();
+  Page<Post> findAll(Pageable pageable);
 }
 
 @Entity
