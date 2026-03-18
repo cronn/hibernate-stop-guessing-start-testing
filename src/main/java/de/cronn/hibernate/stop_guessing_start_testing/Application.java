@@ -15,7 +15,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.hibernate.annotations.BatchSize;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -182,7 +181,7 @@ class PostController {
 interface PostRepository extends JpaRepository<Post, Long> {
 
   @Override
-  @Query("SELECT post FROM Post post ORDER BY post.id")
+  @Query("SELECT post FROM Post post LEFT JOIN FETCH post.postComments ORDER BY post.id")
   List<Post> findAll();
 }
 
@@ -196,7 +195,6 @@ class Post {
 
   @Version private Long version;
 
-  @BatchSize(size = 100)
   @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "post", fetch = FetchType.LAZY)
   private List<PostComment> postComments = new ArrayList<>();
 
